@@ -1,23 +1,23 @@
 Edit History
 ============
 
-Edit history stores a history of edits in every file. These edit points can then be navigated between.
+Navigate back and forward between edit locations in the current file.
 
 "Rules"
 -------
 
 * A new edit location is only created if it is greater than 5 lines away from the previous saved edit location.
-* Like in a browser, when you go back to a point and then create a new edit location all the "future" locations are cleared.
+* When you go back to a point and then create a new edit location all the "future" locations are cleared, as in a web-browser.
 
 Commands
 --------
 
-Edit history provides two commands: `previous_edit` and `next_edit`
+Edit history provides three commands: `previous_edit`, `next_edit` and `clear_edits`
 
 Keybindings
 -----------
 
-No default keybindings are provided as I couldn't find defaults that I liked that didn't override existing ones. I suggest `super+[` on Mac and `ctrl+[` on Linux and Windows. This overrides unindent and indent, but I use Tab and Shift+Tab for this functionality. You can add the following to your User Keybindings:
+No default keybindings are provided as I couldn't find defaults that I liked that didn't override existing ones. I suggest `super+[` on Mac and `ctrl+[` on Linux and Windows. This overrides unindent and indent (I use Tab and Shift+Tab for this functionality). You can add the following to your User Keybindings:
 
 Mac
 
