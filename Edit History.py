@@ -85,7 +85,9 @@ class History(object):
     def previous(self):
         if self._previous_points <= 0:
             return None
-        return self.view.get_regions(HISTORY_KEY_PREV + str(self._previous_points))[0]
+        regions = self.view.get_regions(HISTORY_KEY_PREV + str(self._previous_points))
+        if len(regions) > 0:
+            return regions[0]
 
     def next(self):
         if self._next_points <= 0:
@@ -138,6 +140,8 @@ class ClearEditsCommand(sublime_plugin.TextCommand):
 
     def run(self, edit):
         get_history(self.view).clear()
+        self.view.set_status(HISTORY_KEY, "Edit history cleared")
+
 
 
 class PreviousEditCommand(sublime_plugin.TextCommand):
