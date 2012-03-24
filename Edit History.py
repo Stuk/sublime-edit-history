@@ -32,11 +32,15 @@ class History(object):
     def _set_previous(self, region, index=-1):
         if index == -1:
             index = self._previous_points
+
+        assert region is not None
         self.view.add_regions(HISTORY_KEY_PREV + str(index), [region], HISTORY_KEY)
 
     def _set_next(self, region, index=-1):
         if index == -1:
             index = self._next_points
+
+        assert region is not None
         self.view.add_regions(HISTORY_KEY_NEXT + str(index), [region], HISTORY_KEY)
 
     def back(self):
@@ -50,6 +54,7 @@ class History(object):
         self._set_next(self.previous())
         self._previous_points -= 1
 
+        assert self._previous_points > 0
         # change view to point to new top
         self._update_view(self.previous().begin())
         return True
@@ -74,12 +79,12 @@ class History(object):
 
     def clear(self, only_next=False):
         for n in xrange(1, self._next_points):
-            self.view.add_regions(HISTORY_KEY_NEXT + n)
+            self.view.erase_regions(HISTORY_KEY_NEXT + n)
         self._next_points = 0
 
         if not only_next:
             for n in xrange(1, self._previous_points):
-                self.view.add_regions(HISTORY_KEY_PREV + n)
+                self.view.erase_regions(HISTORY_KEY_PREV + n)
             self._previous_points = 0
 
     def previous(self):
@@ -92,7 +97,9 @@ class History(object):
     def next(self):
         if self._next_points <= 0:
             return None
-        return self.view.get_regions(HISTORY_KEY_NEXT + str(self._next_points))[0]
+        regions = self.view.get_regions(HISTORY_KEY_NEXT + str(self._next_points))
+        if len(regions) > 0:
+            return regions[0]
 
 
 def get_history(view):
