@@ -79,12 +79,12 @@ class History(object):
 
     def clear(self, only_next=False):
         for n in xrange(1, self._next_points):
-            self.view.erase_regions(HISTORY_KEY_NEXT + n)
+            self.view.erase_regions(HISTORY_KEY_NEXT + str(n))
         self._next_points = 0
 
         if not only_next:
             for n in xrange(1, self._previous_points):
-                self.view.erase_regions(HISTORY_KEY_PREV + n)
+                self.view.erase_regions(HISTORY_KEY_PREV + str(n))
             self._previous_points = 0
 
     def previous(self):
