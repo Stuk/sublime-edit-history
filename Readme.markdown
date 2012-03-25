@@ -6,7 +6,7 @@ Navigate back and forward between edit locations in the current file.
 "Rules"
 -------
 
-* A new edit location is only created if it is greater than 5 lines away from the previous saved edit location.
+* A new edit location is only created if it is greater than 5 lines away from the previous saved edit location. ( number customizable via settings file )
 * When you go back to a point and then create a new edit location all the "future" locations are cleared, as in a web-browser.
 
 Commands
