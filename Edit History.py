@@ -119,7 +119,7 @@ def get_line_from_region(view, region):
 class EditHistory(sublime_plugin.EventListener):
 
     def on_modified(self, view):
-        if view.is_scratch():
+        if view.is_scratch() or view.settings().get('is_widget'):
             return
 
         history = get_history(view)
