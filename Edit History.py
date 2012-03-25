@@ -1,7 +1,6 @@
 import sublime
 import sublime_plugin
 
-LINE_PROXIMITY_THRESH = 5
 HISTORY_KEY = "edit_history"
 HISTORY_KEY_PREV = "edit_history_region_prev"
 HISTORY_KEY_NEXT = "edit_history_region_next"
@@ -10,6 +9,13 @@ HISTORY_KEY_NEXT = "edit_history_region_next"
 # sequential, so store locally
 histories = {}
 
+s = sublime.load_settings('Edit History.sublime-settings')
+class Pref:
+    def load(self):
+        Pref.line_proximity_thresh = s.get('line_proximity_thresh', 5)
+Pref = Pref()
+Pref.load();
+s.add_on_change('reload', lambda:Pref.load())
 
 class History(object):
     """Object to store the history for a view"""
@@ -135,7 +141,7 @@ class EditHistory(sublime_plugin.EventListener):
             # get only the last edit line
             last_edit_line = get_line_from_region(view, previous)
 
-        if (abs(this_edit_line - last_edit_line) > LINE_PROXIMITY_THRESH):
+        if (abs(this_edit_line - last_edit_line) > Pref.line_proximity_thresh):
             history.add(this_edit_point)
 
     def on_selection_modified(self, view):
