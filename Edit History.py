@@ -9,13 +9,16 @@ HISTORY_KEY_NEXT = "edit_history_region_next"
 # sequential, so store locally
 histories = {}
 
-s = sublime.load_settings('Edit History.sublime-settings')
+settings = sublime.load_settings('Edit History.sublime-settings')
+
+
 class Pref:
     def load(self):
-        Pref.line_proximity_thresh = s.get('line_proximity_thresh', 5)
+        Pref.line_proximity_thresh = settings.get('line_proximity_thresh', 5)
 Pref = Pref()
-Pref.load();
-s.add_on_change('reload', lambda:Pref.load())
+Pref.load()
+settings.add_on_change('reload', lambda: Pref.load())
+
 
 class History(object):
     """Object to store the history for a view"""
@@ -154,7 +157,6 @@ class ClearEditsCommand(sublime_plugin.TextCommand):
     def run(self, edit):
         get_history(self.view).clear()
         self.view.set_status(HISTORY_KEY, "Edit history cleared")
-
 
 
 class PreviousEditCommand(sublime_plugin.TextCommand):
