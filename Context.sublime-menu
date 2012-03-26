@@ -1,6 +1,6 @@
 [
-		{"caption":"-"},
-    { "command": "previous_edit", "caption": "Back" },
-    { "command": "next_edit", "caption": "Forward" },
+    {"caption":"-"},
+    { "command": "previous_edit", "caption": "Back", "args":{"where":"view_context_menu"}},
+    { "command": "next_edit", "caption": "Forward", "args":{"where":"view_context_menu"}},
     {"caption":"-"}
 ]

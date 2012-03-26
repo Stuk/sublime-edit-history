@@ -14,7 +14,8 @@ settings = sublime.load_settings('Edit History.sublime-settings')
 
 class Pref:
     def load(self):
-        Pref.line_proximity_thresh = settings.get('line_proximity_thresh', 5)
+        Pref.line_proximity_thresh        = settings.get('line_proximity_thresh', 5)
+        Pref.visible_on_view_context_menu = settings.get('visible_on_view_context_menu', True)
 Pref = Pref()
 Pref.load()
 settings.add_on_change('reload', lambda: Pref.load())
@@ -162,18 +163,30 @@ class ClearEditsCommand(sublime_plugin.TextCommand):
 class PreviousEditCommand(sublime_plugin.TextCommand):
     """Moves the cursor to the previous edit in the current file"""
 
-    def run(self, edit):
+    def run(self, edit, where = 'unknow'):
         history = get_history(self.view)
 
         if not history.back():
             self.view.set_status(HISTORY_KEY, "No previous edit history")
 
+    def is_visible(self, where = 'unknow'):
+        if where == 'view_context_menu' and not Pref.visible_on_view_context_menu:
+            return False
+        else:
+            return True
+
 
 class NextEditCommand(sublime_plugin.TextCommand):
     """Moves the cursor to the next edit in the current file"""
 
-    def run(self, edit):
+    def run(self, edit, where = 'unknow'):
         history = get_history(self.view)
 
         if not history.forward():
             self.view.set_status(HISTORY_KEY, "No next edit history")
+
+    def is_visible(self, where = 'unknow'):
+        if where == 'view_context_menu' and not Pref.visible_on_view_context_menu:
+            return False
+        else:
+            return True
