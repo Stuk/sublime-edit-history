@@ -61,12 +61,12 @@ class History(object):
 
         # move top of previous to next
         self._next_points += 1
-        self._set_next(self.previous())
+        self._set_next(self.current())
         self._previous_points -= 1
 
         assert self._previous_points > 0
         # change view to point to new top
-        self._update_view(self.previous().begin())
+        self._update_view(self.current().begin())
         return True
 
     def forward(self):
@@ -78,8 +78,8 @@ class History(object):
         self._set_previous(self.next())
         self._next_points -= 1
 
-        # change view to point to new top of previous
-        self._update_view(self.previous().begin())
+        # change view to point to new current
+        self._update_view(self.current().begin())
         return True
 
     def add(self, point):
@@ -97,10 +97,17 @@ class History(object):
                 self.view.erase_regions(HISTORY_KEY_PREV + str(n))
             self._previous_points = 0
 
-    def previous(self):
+    def current(self):
         if self._previous_points <= 0:
             return None
         regions = self.view.get_regions(HISTORY_KEY_PREV + str(self._previous_points))
+        if len(regions) > 0:
+            return regions[0]
+
+    def previous(self):
+        if self._previous_points <= 1:
+            return None
+        regions = self.view.get_regions(HISTORY_KEY_PREV + str(self._previous_points - 1))
         if len(regions) > 0:
             return regions[0]
 
@@ -137,13 +144,13 @@ class EditHistory(sublime_plugin.EventListener):
         this_edit_point = view.sel()[0].begin()
         this_edit_line = view.rowcol(this_edit_point)[0]
 
-        previous = history.previous()
+        current = history.current()
 
-        if  previous is None:
+        if current is None:
             last_edit_line = -99
         else:
             # get only the last edit line
-            last_edit_line = get_line_from_region(view, previous)
+            last_edit_line = get_line_from_region(view, current)
 
         if (abs(this_edit_line - last_edit_line) > Pref.line_proximity_thresh):
             history.add(this_edit_point)
@@ -169,6 +176,9 @@ class PreviousEditCommand(sublime_plugin.TextCommand):
         if not history.back():
             self.view.set_status(HISTORY_KEY, "No previous edit history")
 
+    def is_enabled(self):
+        return not get_history(self.view).previous() is None
+
     def is_visible(self, where='unknown'):
         if where == 'view_context_menu' and not Pref.visible_on_view_context_menu:
             return False
@@ -184,6 +194,9 @@ class NextEditCommand(sublime_plugin.TextCommand):
 
         if not history.forward():
             self.view.set_status(HISTORY_KEY, "No next edit history")
+
+    def is_enabled(self):
+        return not get_history(self.view).next() is None
 
     def is_visible(self, where='unknown'):
         if where == 'view_context_menu' and not Pref.visible_on_view_context_menu:
