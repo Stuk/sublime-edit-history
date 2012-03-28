@@ -163,13 +163,13 @@ class ClearEditsCommand(sublime_plugin.TextCommand):
 class PreviousEditCommand(sublime_plugin.TextCommand):
     """Moves the cursor to the previous edit in the current file"""
 
-    def run(self, edit, where = 'unknow'):
+    def run(self, edit, where='unknown'):
         history = get_history(self.view)
 
         if not history.back():
             self.view.set_status(HISTORY_KEY, "No previous edit history")
 
-    def is_visible(self, where = 'unknow'):
+    def is_visible(self, where='unknown'):
         if where == 'view_context_menu' and not Pref.visible_on_view_context_menu:
             return False
         else:
@@ -179,13 +179,13 @@ class PreviousEditCommand(sublime_plugin.TextCommand):
 class NextEditCommand(sublime_plugin.TextCommand):
     """Moves the cursor to the next edit in the current file"""
 
-    def run(self, edit, where = 'unknow'):
+    def run(self, edit, where='unknown'):
         history = get_history(self.view)
 
         if not history.forward():
             self.view.set_status(HISTORY_KEY, "No next edit history")
 
-    def is_visible(self, where = 'unknow'):
+    def is_visible(self, where='unknown'):
         if where == 'view_context_menu' and not Pref.visible_on_view_context_menu:
             return False
         else:
