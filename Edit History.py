@@ -180,10 +180,7 @@ class PreviousEditCommand(sublime_plugin.TextCommand):
         return not get_history(self.view).previous() is None
 
     def is_visible(self, where='unknown'):
-        if where == 'view_context_menu' and not Pref.visible_on_view_context_menu:
-            return False
-        else:
-            return True
+        return Pref.visible_on_view_context_menu
 
 
 class NextEditCommand(sublime_plugin.TextCommand):
@@ -199,7 +196,4 @@ class NextEditCommand(sublime_plugin.TextCommand):
         return not get_history(self.view).next() is None
 
     def is_visible(self, where='unknown'):
-        if where == 'view_context_menu' and not Pref.visible_on_view_context_menu:
-            return False
-        else:
-            return True
+        return Pref.visible_on_view_context_menu
