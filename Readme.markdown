@@ -1,6 +1,8 @@
 Edit History
 ============
 
+**Sublime Text 3 note:** This functionality is included by default (as [Jump Back and Jump Forward](http://www.sublimetext.com/blog/articles/sublime-text-3-beta-3019)), and so this plugin is not needed any more. Thanks for using it!
+
 Navigate back and forward between edit locations in the current file.
 
 "Rules"
